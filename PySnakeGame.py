@@ -15,7 +15,6 @@ RED = (255, 0, 0)
 GREEN = (0, 0, 255)
 
 
-
 class Game:
     def __init__(self):
         self.s = Snake()
