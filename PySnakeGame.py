@@ -13,7 +13,6 @@ SPEED = CELL_SIZE * SPEED_FACTOR
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 0, 255)
-X = random.randrange(0, WIDTH, 1)
 
 
 class Game:
