@@ -13,7 +13,7 @@ SPEED = CELL_SIZE * SPEED_FACTOR
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 0, 255)
-X = random.randrange(0, WIDTH, 1)
+
 
 
 class Game:
@@ -51,13 +51,14 @@ class Snake:
         self.x_speed = SPEED
         self.y_speed = 0
         self.food = Food()
-        self.total = 1
+        self.total = 0
         self.tail = []
 
     def check_eat(self):
         # TODO: check if snake eats the food and add 1 to length
         if self.x == self.food.x and self.y == self.food.y:
             self.total += 1
+            print(self.total)
             self.food = Food()
 
     def check_pos(self):
