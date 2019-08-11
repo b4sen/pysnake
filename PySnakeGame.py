@@ -1,4 +1,5 @@
 import sys
+import os
 import pygame
 import random
 from pygame.time import Clock
@@ -12,13 +13,18 @@ SPEED = CELL_SIZE * SPEED_FACTOR
 
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
-GREEN = (0, 0, 255)
+GREEN = (0, 255, 0)
+
+# FONT_SIZE has to be a multiple of 10
+FONT_SIZE = 30
 
 
 class Game:
     def __init__(self):
         self.s = Snake()
         pygame.init()
+        pygame.font.init()
+        self.font = pygame.font.SysFont('DejaVu Sans Mono', FONT_SIZE)
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = Clock()
 
@@ -26,8 +32,10 @@ class Game:
         self.screen.fill(BLACK)
 
     def draw(self):
+        surf = self.font.render('Points: {}'.format(self.s.total), True, (255, 255, 255))
         key = pygame.key.get_pressed()
         self.clear_screen()
+        self.screen.blit(surf, (0, 0))
         self.s.draw(self.screen)
         self.s.food.draw(self.screen)
         self.s.update(key)
@@ -46,7 +54,7 @@ class Game:
 class Snake:
     def __init__(self):
         self.x = random.randrange(0, WIDTH / 2, CELL_SIZE)
-        self.y = random.randrange(0, HEIGHT, CELL_SIZE)
+        self.y = random.randrange(FONT_SIZE, HEIGHT, CELL_SIZE)
         self.x_speed = SPEED
         self.y_speed = 0
         self.food = Food()
@@ -94,11 +102,13 @@ class Snake:
         self.y += self.y_speed
         self.check_pos()
 
+
     def draw(self, screen):
         if len(self.tail) != 0:
             for i in range(len(self.tail)):
                 pygame.draw.rect(screen, RED, (self.tail[i][0], self.tail[i][1], CELL_SIZE, CELL_SIZE))
         pygame.draw.rect(screen, RED, (self.x, self.y, CELL_SIZE, CELL_SIZE))
+
 
 class Food:
     def __init__(self):
