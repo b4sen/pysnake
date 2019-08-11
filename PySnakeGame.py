@@ -45,7 +45,7 @@ class Game:
 
 class Snake:
     def __init__(self):
-        self.x = random.randrange(0, WIDTH, CELL_SIZE)
+        self.x = random.randrange(0, WIDTH / 2, CELL_SIZE)
         self.y = random.randrange(0, HEIGHT, CELL_SIZE)
         self.x_speed = SPEED
         self.y_speed = 0
@@ -54,11 +54,11 @@ class Snake:
         self.tail = []
 
     def check_eat(self):
-        # TODO: check if snake eats the food and add 1 to length
         if self.x == self.food.x and self.y == self.food.y:
             self.total += 1
-            print(self.total)
-            self.food = Food()
+            self.tail.append([self.x, self.y])
+            self.food.x = random.randrange(0, WIDTH, CELL_SIZE)
+            self.food.y = random.randrange(0, HEIGHT, CELL_SIZE)
 
     def check_pos(self):
         if self.x > WIDTH - CELL_SIZE:
@@ -83,14 +83,22 @@ class Snake:
         if key[pygame.K_RIGHT]:
             self.x_speed = SPEED
             self.y_speed = 0
+        try:
+            for i in range(self.total - 1):
+                self.tail[i] = self.tail[i + 1]
+            self.tail[self.total - 1] = [self.x, self.y]
+        except:
+            pass
 
         self.x += self.x_speed
         self.y += self.y_speed
         self.check_pos()
 
     def draw(self, screen):
+        if len(self.tail) != 0:
+            for i in range(len(self.tail)):
+                pygame.draw.rect(screen, RED, (self.tail[i][0], self.tail[i][1], CELL_SIZE, CELL_SIZE))
         pygame.draw.rect(screen, RED, (self.x, self.y, CELL_SIZE, CELL_SIZE))
-
 
 class Food:
     def __init__(self):
