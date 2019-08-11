@@ -1,5 +1,7 @@
+# TODO: don't spawn the food ON the snake
+# TODO: forbidden directions & snake dies
+
 import sys
-import os
 import pygame
 import random
 from pygame.time import Clock
@@ -101,7 +103,6 @@ class Snake:
         self.x += self.x_speed
         self.y += self.y_speed
         self.check_pos()
-
 
     def draw(self, screen):
         if len(self.tail) != 0:
