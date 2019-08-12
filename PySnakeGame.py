@@ -1,5 +1,5 @@
 # TODO: don't spawn the food ON the snake
-# TODO: forbidden directions & snake dies
+
 
 import sys
 import pygame
@@ -64,6 +64,7 @@ class Snake:
         self.tail = []
 
     def check_eat(self):
+        self.check_dead()
         if self.x == self.food.x and self.y == self.food.y:
             self.total += 1
             self.tail.append([self.x, self.y])
@@ -80,6 +81,12 @@ class Snake:
         if self.y <= 0:
             self.y = 0
 
+    def check_dead(self):
+        # TODO: check for walls -> dies too early
+        if [self.x, self.y] in self.tail:
+            print("You died!")
+            sys.exit()
+
     def update(self, key):
         if key[pygame.K_UP]:
             self.x_speed = 0
@@ -93,12 +100,11 @@ class Snake:
         if key[pygame.K_RIGHT]:
             self.x_speed = SPEED
             self.y_speed = 0
-        try:
+
+        if self.total > 0:
             for i in range(self.total - 1):
                 self.tail[i] = self.tail[i + 1]
             self.tail[self.total - 1] = [self.x, self.y]
-        except:
-            pass
 
         self.x += self.x_speed
         self.y += self.y_speed
